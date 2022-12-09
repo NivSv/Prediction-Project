@@ -2,6 +2,10 @@
 @import "setup/variables.scss";
 @import "setup/functions.scss";
 @import "setup/mixins.scss";
+@import "setup/helpers.scss";
 
 // Basics
 @import "basics/base.scss";
+
+//Pages
+@import "pages/home.scss";

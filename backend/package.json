@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/cors": "^8.2.0",
     "@fastify/mongodb": "^6.2.0",
     "axios": "^1.2.1",
     "fastify": "^4.10.2",

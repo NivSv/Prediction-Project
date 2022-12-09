@@ -1,0 +1,11 @@
+.accordion{
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 40%;
+}
+
+@media (max-width: 768px) {
+    .accordion{
+        max-width: 100%;
+    }
+}

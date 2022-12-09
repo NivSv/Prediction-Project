@@ -5,10 +5,17 @@ import { codegenMercurius, gql } from 'mercurius-codegen'
 import { connect } from 'mongoose';
 import { Person } from './person/person.schema';
 import { PersonService } from './person/person.service';
+import cors from '@fastify/cors'
 
 const server: FastifyInstance = fastify({
     maxParamLength: 5000,
 });
+
+server.register(cors, {
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+})
 
 const buildContext = async (req: FastifyRequest, _reply: FastifyReply) => {
     return {
@@ -73,13 +80,13 @@ const loaders: MercuriusLoaders = {
     person: {
         async nationality(queries, _ctx) {
             return await Promise.all(queries.map(async ({ obj }) => {
-                const entity =  await Person.findOne({ name: obj.name })
+                const entity = await Person.findOne({ name: obj.name })
                 return entity?.nationalityPrediction
             }))
         },
         async gender(queries, _ctx) {
             return await Promise.all(queries.map(async ({ obj }) => {
-                const entity =  await Person.findOne({ name: obj.name })
+                const entity = await Person.findOne({ name: obj.name })
                 return entity?.genderPrediction
             }))
         },
