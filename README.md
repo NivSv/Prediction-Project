@@ -21,10 +21,26 @@ Frontend:
 * React - Typescript
 
 ## Setup
-To run this project, firstly you need to run the docker image:
+step 1:
 use the following command in the db-docker folder to run the image and create a basic database that works with the project:
 ```
 docker compose up -d
+```
+step 2:
+run the backend with the commend
+```
+npm run dev
+or
+npm run build
+npm run start
+```
+step 3:
+ run the frontend with the commend
+```
+npm start
+or 
+npm run build
+npm run serve
 ```
 Credentials:
 * Port: 27017
