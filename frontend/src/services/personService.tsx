@@ -4,9 +4,20 @@ import { BASE_URL, client } from './apolloService';
 const ENDPOINT = "/graphql"
 
 export type Person = {
+    id: string;
     name: string;
-    nationality: string;
-    gender: string;
+    nationality: Nationality[];
+    gender: Gender;
+}
+
+type Nationality = {
+    country: string;
+    probability: number;
+}
+
+type Gender = {
+    count: number;
+    type: string;
     probability: number;
 }
 
@@ -25,10 +36,17 @@ const getPersons = async (): Promise<Person[]> => {
             query: gql`
                 query{
                     person{
+                        id
                         name
-                        nationality
-                        gender
-                        probability
+                        nationality{
+                            country
+                            probability
+                        }
+                        gender{
+                            type,
+                            count
+                            probability
+                        }
                     }
                 }
             `,
@@ -36,10 +54,10 @@ const getPersons = async (): Promise<Person[]> => {
 
         return res.data.person.map(person => {
             return {
+                id: person.id,
                 name: person.name,
                 nationality: person.nationality,
                 gender: person.gender,
-                probability: person.probability
             }
         });
     } catch (error) {
@@ -54,10 +72,17 @@ const addPerson = async (name: string): Promise<Person | null> => {
             mutation: gql`
                 mutation{
                     addPerson(name: "${name}"){
+                        id
                         name
-                        nationality
-                        gender
-                        probability
+                        nationality{
+                            country
+                            probability
+                        }
+                        gender{
+                            type,
+                            count
+                            probability
+                        }
                     }
                 }
             `,
@@ -66,10 +91,10 @@ const addPerson = async (name: string): Promise<Person | null> => {
             return null;
         }
         return {
+            id: res.data.addPerson.id,
             name: res.data.addPerson.name,
             nationality: res.data.addPerson.nationality,
             gender: res.data.addPerson.gender,
-            probability: res.data.addPerson.probability
         }
     } catch (error) {
         console.error(error);
