@@ -14,22 +14,47 @@ This project takes a user’s input (a person’s name) and returns a predicted 
 ## Technologies
 Project is created with:
 Docker: 
-* Image of SQL server
+* Image of mongodb server
+
 Backend:
 * Fastify(node.js framework) - Typescript
+
 Frontend:
 * React - Typescript
 
 ## Setup
-To run this project, firstly you need to run the docker image:
+__step 1:__
+
 use the following command in the db-docker folder to run the image and create a basic database that works with the project:
 ```
 docker compose up -d
 ```
-Credentials:
+DB Credentials:
 * Port: 27017
 * Username: root 
 * Password: example
+
+__step 2:__
+#### Dev run
+run the backend with the command
+```
+npm run dev
+```
+ run the frontend with the command
+```
+npm start
+```
+#### Prod run
+run the backend with the command
+```
+npm run build
+npm run start
+```
+run the frontend with the command
+```
+npm run build
+npm run serve
+```
 
 ## Technical Info
 Backend Dependencies:
