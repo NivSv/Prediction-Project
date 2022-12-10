@@ -9,27 +9,26 @@ import React from "react";
 export default function PersonList(params: { persons: Person[]; }) {
     const [expanded, setExpanded] = React.useState<string | false>(false);
 
-    const handleChange =
-        (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-            setExpanded(isExpanded ? panel : false);
-        };
+    // const handleChange =
+    //     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    //         setExpanded(isExpanded ? panel : false);
+    //     };
 
     return (
         <div className="accordion">
             {
                 params.persons.map((person, index) => (
-                    <Accordion key={index} expanded={expanded === person.name} onChange={handleChange(person.name)}>
+                    <Accordion key={index} expanded={expanded === person.name}>
                         <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
+                            // expandIcon={<ExpandMoreIcon />}
                         >
                             <Typography sx={{ width: '33%', flexShrink: 0 }}>
                                 {person.name}
                             </Typography>
                             <div className="flex center gap-1">
-                                <p>Prediction:</p>
-                                <p>{person.gender}</p>
-                                <p>{Math.round(person.probability * 100)}%</p>
+                                <p>Predict to be {person.gender} from</p>
                                 <img width={30} height={20} src={`https://countryflagsapi.com/png/${person.nationality}`} />
+                                <p>by {Math.round(person.probability * 100)}%</p>
                             </div>
                         </AccordionSummary>
                         <AccordionDetails>

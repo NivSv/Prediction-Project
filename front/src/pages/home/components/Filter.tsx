@@ -50,7 +50,7 @@ export default function Filter(params: FilterProps) {
             id="free-solo-demo"
             freeSolo
             value={params.textValue}
-            options={[]}
+            options={params.persons.map((person) => person.name)}
             onInput={handleSearch}
             onChange={handleOnChange}
             onBlur={handleBlue}
