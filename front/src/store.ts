@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 import personReducer from "./reducers/personSlice";
-import { useDispatch } from 'react-redux'
 
 export const store = configureStore({
     reducer: { personReducer },

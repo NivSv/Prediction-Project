@@ -1,100 +1,76 @@
-import { axios, BASE_URL } from "./httpService";
-
+import { gql } from '@apollo/client';
+import { BASE_URL, client } from './apolloService';
 
 const ENDPOINT = "/graphql"
 
 export type Person = {
     name: string;
-    nationality: Array<Nationality>;
-    gender: Gender;
-}
-
-type Nationality = {
-    country: string;
+    nationality: string;
+    gender: string;
     probability: number;
 }
 
-type Gender = {
-    name: string;
-    probability: number;
-    count: number;
+type PersonResponse = {
+    person: Person[];
 }
-
-type GetPersonResponse = {
-    data: {
-        persons: Person[];
-    }
-};
 
 type AddPersonResponse = {
-    data: {
-        add: Person;
-    }
+    addPerson: Person;
 }
 
 
-const getPersons = async (): Promise<GetPersonResponse|null> => {
+const getPersons = async (): Promise<Person[]> => {
     try {
-        const { data, status } = await axios.post<GetPersonResponse>(BASE_URL + ENDPOINT, {
-            query: `
-        query persons {
-            persons{
-                name
-                nationality{
-                    country,
-                    probability
+        const res = await client.query<PersonResponse>({
+            query: gql`
+                query{
+                    person{
+                        name
+                        nationality
+                        gender
+                        probability
+                    }
                 }
-                gender{
-                    name,
-                    probability
-                    count
-                }
+            `,
+        })
+
+        return res.data.person.map(person => {
+            return {
+                name: person.name,
+                nationality: person.nationality,
+                gender: person.gender,
+                probability: person.probability
             }
-        }
-        `
-        }, {
-            headers: {
-                Accept: 'application/json',
-            },
-        },
-        );
-        console.log(data);
-        
-        return data;
+        });
     } catch (error) {
         console.error(error);
-        return null;
+        return [];
     }
 }
 
-const addPerson = async (name:string): Promise<AddPersonResponse|null> => {
+const addPerson = async (name: string): Promise<Person | null> => {
     try {
-        const { data, status } = await axios.post<AddPersonResponse>(BASE_URL + ENDPOINT, {
-            query: `
-            mutation{
-                add(name: "${name}"){
-                    name,
-                    nationality{
-                        country,
+        const res = await client.mutate<AddPersonResponse>({
+            mutation: gql`
+                mutation{
+                    addPerson(name: "${name}"){
+                        name
+                        nationality
+                        gender
                         probability
-                    }
-                    gender{
-                        name,
-                        probability
-                        count
                     }
                 }
-            }
-        `
-        }, {
-            headers: {
-                Accept: 'application/json',
-            },
-        },
-        );
-        console.log(data);
-        
-        return data;
+            `,
+        });
+        if (!res.data) {
+            return null;
+        }
+        return {
+            name: res.data.addPerson.name,
+            nationality: res.data.addPerson.nationality,
+            gender: res.data.addPerson.gender,
+            probability: res.data.addPerson.probability
+        }
     } catch (error) {
         console.error(error);
         return null;

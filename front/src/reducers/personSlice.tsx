@@ -1,19 +1,16 @@
+import { ConstructionOutlined } from "@mui/icons-material";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Person, personService } from "../services/personService";
+import { RootState } from "../store";
 
 const firstData = await personService.getPersons();
 
-// Define a type for the slice state
-interface PersonState {
-    persons: Person[] | null;
+const initialState = {
+    persons: firstData,
 }
 
-const initialState: PersonState = {
-    persons: firstData?.data.persons ?? null
-}
-
-export const personSlice = createSlice({
-    name: 'person',
+export const personsSlice = createSlice({
+    name: 'persons',
     initialState,
     reducers: {
         addPerson: (state, action: PayloadAction<Person>) => {
@@ -23,13 +20,12 @@ export const personSlice = createSlice({
                 ...state,
                 persons: [...state.persons ?? [], action.payload],
             }
-
         }
     }
 });
 
-export const { addPerson } = personSlice.actions;
+// export const { addPerson } = personsSlice.actions;
 
-export const getPersonsState = (state: PersonState) => state.persons;
+ export const getPersonsState = (state: RootState) => state.personReducer.persons;
 
-export default personSlice.reducer;
+export default personsSlice.reducer;

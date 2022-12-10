@@ -15,8 +15,8 @@ export default function Home(props: any) {
   const [filterdPersons, setFilterdPersons] = React.useState<Array<Person>>([]);
   const [addButton, setAddButton] = React.useState<boolean>(false);
   const [textValue, setTextValue] = React.useState<string>("");
-  const persons = useAppSelector(state => state.persons.persons)
-  const dispatch = useAppDispatch(state);
+  const persons = useAppSelector(state => state.personReducer.persons);
+  const dispatch = useAppDispatch();
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -65,8 +65,10 @@ export default function Home(props: any) {
 
   const handlePersonAddClick = async () => {
     const person = await personService.addPerson(textValue);
+    if(!person)
+      return;
     if (person) {
-      dispatch({ type: 'person/addPerson', payload: person.data.add });
+      dispatch({ type: 'person/addPerson', payload: person });
     }
     console.log(persons);
     setTextValue("");
@@ -99,18 +101,17 @@ export default function Home(props: any) {
                 <Typography sx={{ width: '33%', flexShrink: 0 }}>
                   {person.name}
                 </Typography>
-                <Typography>
                   <div className="flex center gap-1">
                     <p>Prediction:</p>
-                    <p>{person.gender.name}</p>
-                    <img width={30} height={20} src={`https://countryflagsapi.com/png/${person.nationality[0].country}`} />
+                    <p>{person.gender}</p>
+                    <p>{Math.round(person.probability * 100)}%</p>
+                    <img width={30} height={20} src={`https://countryflagsapi.com/png/${person.nationality}`} />
                   </div>
-                </Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
-                  Predicted to be {person.gender.name} by {Math.round(person.gender.probability * 100)}%, there are {person.gender.count} people with the same name.<br />
-                  {person.nationality.map((national, index) => (<p key={index}>Predicted to be from {national.country} by {Math.round(national.probability * 100)}%</p>))}
+                  {/* Predicted to be {person.gender.name} by {Math.round(person.gender.probability * 100)}%, there are {person.gender.count} people with the same name.<br />
+                  {person.nationality.map((national, index) => (<p key={index}>Predicted to be from {national.country} by {Math.round(national.probability * 100)}%</p>))} */}
                 </Typography>
               </AccordionDetails>
             </Accordion>
