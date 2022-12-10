@@ -1,19 +1,22 @@
 import { TextField } from "@mui/material";
 import { Autocomplete } from "@mui/material";
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import React, { useEffect } from "react";
 import { Accordion, Button } from "@mui/material";
 import { AccordionSummary } from "@mui/material";
 import { Typography } from "@mui/material";
 import { AccordionDetails } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Person } from "../../services/personService";
+import { Person, personService } from "../../services/personService";
+import { getPersonsState } from "../../reducers/personSlice";
 
 export default function Home(props: any) {
   const [expanded, setExpanded] = React.useState<string | false>(false);
   const [filterdPersons, setFilterdPersons] = React.useState<Array<Person>>([]);
   const [addButton, setAddButton] = React.useState<boolean>(false);
+  const [textValue, setTextValue] = React.useState<string>("");
   const persons = useAppSelector(state => state.persons.persons)
+  const dispatch = useAppDispatch(state);
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -26,10 +29,12 @@ export default function Home(props: any) {
 
   const filterByValue = (vaule: string) => {
     if (!vaule) {
+      setTextValue("");
       setAddButton(false);
       setFilterdPersons(persons ?? []);
     }
     else {
+      setTextValue(vaule);
       const filterd = persons?.filter(person => person.name.toLowerCase().includes(vaule.toLowerCase()))
       setFilterdPersons(
         filterd ?? []
@@ -44,7 +49,6 @@ export default function Home(props: any) {
   }
 
   const handleSearch = (event: React.FormEvent<HTMLDivElement>) => {
-    console.log("here");
     filterByValue((event.target as HTMLInputElement).value);
   }
 
@@ -59,12 +63,23 @@ export default function Home(props: any) {
     }
   }
 
+  const handlePersonAddClick = async () => {
+    const person = await personService.addPerson(textValue);
+    if (person) {
+      dispatch({ type: 'person/addPerson', payload: person.data.add });
+    }
+    console.log(persons);
+    setTextValue("");
+    filterByValue('');
+  }
+
   return (
     <div>
       <div className="flex justify-center mtb-1 gap-1">
         <Autocomplete
           id="free-solo-demo"
           freeSolo
+          value={textValue}
           options={persons?.map((person) => person.name) ?? []}
           onInput={handleSearch}
           onChange={handleOnChange}
@@ -72,7 +87,7 @@ export default function Home(props: any) {
           sx={{ width: 300 }}
           renderInput={(params) => <TextField {...params} label="Search" />}
         />
-        {addButton && <Button variant="contained">Add Person</Button>}
+        {addButton && <Button variant="contained" onClick={handlePersonAddClick}>Add Person</Button>}
       </div>
       <div className="accordion">
         {

@@ -26,6 +26,12 @@ type GetPersonResponse = {
     }
 };
 
+type AddPersonResponse = {
+    data: {
+        add: Person;
+    }
+}
+
 
 const getPersons = async (): Promise<GetPersonResponse|null> => {
     try {
@@ -61,6 +67,42 @@ const getPersons = async (): Promise<GetPersonResponse|null> => {
     }
 }
 
+const addPerson = async (name:string): Promise<AddPersonResponse|null> => {
+    try {
+        const { data, status } = await axios.post<AddPersonResponse>(BASE_URL + ENDPOINT, {
+            query: `
+            mutation{
+                add(name: "${name}"){
+                    name,
+                    nationality{
+                        country,
+                        probability
+                    }
+                    gender{
+                        name,
+                        probability
+                        count
+                    }
+                }
+            }
+        `
+        }, {
+            headers: {
+                Accept: 'application/json',
+            },
+        },
+        );
+        console.log(data);
+        
+        return data;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
+
 export const personService = {
     getPersons,
+    addPerson
 }
