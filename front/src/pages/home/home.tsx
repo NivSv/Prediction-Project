@@ -1,15 +1,12 @@
-import { TextField } from "@mui/material";
-import { Autocomplete } from "@mui/material";
 import React, { useEffect } from "react";
 import { Button } from "@mui/material";
 import { Person, personService } from "../../services/personService";
 import PersonList from "./components/personList";
-import { RootState } from "../../store";
 import { useDispatch, useSelector } from 'react-redux'
 import { addPerson, selectCount } from "../../reducers/personSlice";
 import Filter from "./components/Filter";
 
-export default function Home(props: any) {
+export default function Home() {
   const [filterdPersons, setFilterdPersons] = React.useState<Array<Person>>([]);
   const [addButtonActive, setAddButtonActive] = React.useState<boolean>(false);
   const [textValue, setTextValue] = React.useState<string>("");
@@ -17,24 +14,25 @@ export default function Home(props: any) {
   const statePersons = useSelector(selectCount);
   const dispatch = useDispatch();
 
-
+  //Get persons from state
   useEffect(() => {
     setPersons(statePersons);
   }, [statePersons]);
 
+  //Set filterd persons to persons
   useEffect(() => {
     setFilterdPersons(persons);
   }, [persons]);
 
+  //Handle button add click
   const handlePersonAddClick = async () => {
     const person = await personService.addPerson(textValue);
     if (!person)
       return;
-    if (person) {
+    else
       dispatch(addPerson(person));
-    }
-    console.log(persons);
     setTextValue("");
+    setAddButtonActive(false);
   }
 
   return (
