@@ -23,35 +23,38 @@ Frontend:
 * React - Typescript
 
 ## Setup
-step 1:
+__step 1:__
+
 use the following command in the db-docker folder to run the image and create a basic database that works with the project:
 ```
 docker compose up -d
 ```
-step 2:
+DB Credentials:
+* Port: 27017
+* Username: root 
+* Password: example
+
+__step 2:__
+#### Dev run
 run the backend with the command
 ```
 npm run dev
 ```
-or
-```
-npm run build
-npm run start
-```
-step 3:
  run the frontend with the command
 ```
 npm start
 ```
-or 
+#### Prod run
+run the backend with the command
+```
+npm run build
+npm run start
+```
+run the frontend with the command
 ```
 npm run build
 npm run serve
 ```
-Credentials:
-* Port: 27017
-* Username: root 
-* Password: example
 
 ## Technical Info
 Backend Dependencies:
