@@ -14,7 +14,7 @@ This project takes a user’s input (a person’s name) and returns a predicted 
 ## Technologies
 Project is created with:
 Docker: 
-* Image of SQL server
+* Image of mongodb server
 
 Backend:
 * Fastify(node.js framework) - Typescript
