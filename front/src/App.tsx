@@ -1,11 +1,13 @@
 import Home from './pages/home/home';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import blue from '@mui/material/colors/blue';
-import red from '@mui/material/colors/red';
 
 const darkTheme = createTheme({
   palette: {
+    primary:{
+      light: '#21130d',
+      main: "#21130d",
+    }
   },
 });
 
