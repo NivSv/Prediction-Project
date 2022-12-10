@@ -16,25 +16,34 @@ Project is created with:
 Docker: 
 * Image of SQL server
 Backend:
-* Fastify(node.js framework)
-* Graphql
+* Fastify(node.js framework) - Typescript
 Frontend:
-* React
-* Vite
-* Redux
+* React - Typescript
 
 ## Setup
 To run this project, firstly you need to run the docker image:
-use the following command to run the image and create a basic database that works with the project:
+use the following command in the db-docker folder to run the image and create a basic database that works with the project:
 ```
 docker compose up -d
 ```
 Credentials:
 * Port: 27017
-* Username (default): root 
+* Username: root 
 * Password: example
 
 ## Technical Info
 Backend Dependencies:
+* Axios
+* Graphql
+* Mongoose
+* Mercurius
 
 Frontend Dependencies:
+* Apollo Client
+* Material UI
+* Vite
+* Redux (toolkit)
+* Vite
+* Sass
+* Graphql
+
