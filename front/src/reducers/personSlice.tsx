@@ -14,17 +14,12 @@ export const personsSlice = createSlice({
     initialState,
     reducers: {
         addPerson: (state, action: PayloadAction<Person>) => {
-            console.log(action.payload);
-            // const newState:PersonState = {persons:[...state.persons??[], action.payload]};
-            return {
-                ...state,
-                persons: [...state.persons ?? [], action.payload],
-            }
+            state.persons.push(action.payload);
         }
     }
 });
 
-// export const { addPerson } = personsSlice.actions;
+export const { addPerson } = personsSlice.actions;
 
  export const getPersonsState = (state: RootState) => state.personReducer.persons;
 

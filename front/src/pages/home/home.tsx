@@ -2,26 +2,17 @@ import { TextField } from "@mui/material";
 import { Autocomplete } from "@mui/material";
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import React, { useEffect } from "react";
-import { Accordion, Button } from "@mui/material";
-import { AccordionSummary } from "@mui/material";
-import { Typography } from "@mui/material";
-import { AccordionDetails } from "@mui/material";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Button } from "@mui/material";
 import { Person, personService } from "../../services/personService";
-import { getPersonsState } from "../../reducers/personSlice";
+import { addPerson, getPersonsState } from "../../reducers/personSlice";
+import PersonList from "./components/personList";
 
 export default function Home(props: any) {
-  const [expanded, setExpanded] = React.useState<string | false>(false);
   const [filterdPersons, setFilterdPersons] = React.useState<Array<Person>>([]);
   const [addButton, setAddButton] = React.useState<boolean>(false);
   const [textValue, setTextValue] = React.useState<string>("");
-  const persons = useAppSelector(state => state.personReducer.persons);
+  const persons = useAppSelector(getPersonsState);
   const dispatch = useAppDispatch();
-
-  const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-      setExpanded(isExpanded ? panel : false);
-    };
 
   useEffect(() => {
     setFilterdPersons(persons ?? []);
@@ -68,7 +59,7 @@ export default function Home(props: any) {
     if(!person)
       return;
     if (person) {
-      dispatch({ type: 'person/addPerson', payload: person });
+      dispatch({ type: addPerson, payload: person });
     }
     console.log(persons);
     setTextValue("");
@@ -91,33 +82,7 @@ export default function Home(props: any) {
         />
         {addButton && <Button variant="contained" onClick={handlePersonAddClick}>Add Person</Button>}
       </div>
-      <div className="accordion">
-        {
-          filterdPersons?.map((person, index) => (
-            <Accordion key={index} expanded={expanded === person.name} onChange={handleChange(person.name)}>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-              >
-                <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                  {person.name}
-                </Typography>
-                  <div className="flex center gap-1">
-                    <p>Prediction:</p>
-                    <p>{person.gender}</p>
-                    <p>{Math.round(person.probability * 100)}%</p>
-                    <img width={30} height={20} src={`https://countryflagsapi.com/png/${person.nationality}`} />
-                  </div>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  {/* Predicted to be {person.gender.name} by {Math.round(person.gender.probability * 100)}%, there are {person.gender.count} people with the same name.<br />
-                  {person.nationality.map((national, index) => (<p key={index}>Predicted to be from {national.country} by {Math.round(national.probability * 100)}%</p>))} */}
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-          ))
-        }
-      </div>
+      <PersonList persons={filterdPersons} />
     </div >
   );
 }
