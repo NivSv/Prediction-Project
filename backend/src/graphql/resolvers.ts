@@ -4,13 +4,13 @@ import { ApiService } from "../services/api.service";
 
 export const resolvers: IResolvers = {
     Query: {
-        person() {
+        async person() {
             //Getting all the persons from the database
-            return Person.find();
+            return await Person.find();
         },
-        personByName(_, { name }) {
+        async personByName(_, { name }) {
             //Getting a person by name from the database
-            return Person.findOne({name});
+            return await Person.findOne({name});
         }
     },
     Mutation: {

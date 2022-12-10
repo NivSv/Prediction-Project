@@ -15,7 +15,7 @@ export const schemaGraphql = gql`
     }
 
     type Mutation {
-        addPerson(name:String): Person!
+        addPerson(name:String!): Person!
     }
 `;
 

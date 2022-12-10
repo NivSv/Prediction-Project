@@ -24,4 +24,5 @@ const personSchema = new Schema({
     probability: { type: Number, required: true }
 });
 
+//Create the model
 export const Person = model('Person', personSchema);

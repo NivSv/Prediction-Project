@@ -1,9 +1,10 @@
 import fastify, { FastifyInstance } from 'fastify'
-import mercurius, { IResolvers, MercuriusLoaders } from 'mercurius'
+import mercurius from 'mercurius'
 import { connect } from 'mongoose';
 import cors from '@fastify/cors'
 import { resolvers } from './graphql/resolvers';
 import { schemaGraphql } from './graphql/typeDef';
+import codegenMercurius from 'mercurius-codegen';
 
 const server: FastifyInstance = fastify({
     logger: true // <- enable logger
@@ -17,6 +18,10 @@ server.register(mercurius, {
     schema : schemaGraphql,
     resolvers: resolvers
 })
+
+codegenMercurius(server, {
+    targetPath: './src/graphql/generated.ts',
+  }).catch(console.error)
 
 server.listen({ port: 3000 }, (err, address) => {
     if (err) {
