@@ -1,22 +1,31 @@
 import { TextField } from "@mui/material";
 import { Autocomplete } from "@mui/material";
-import { useAppDispatch, useAppSelector } from '../../hooks';
 import React, { useEffect } from "react";
 import { Button } from "@mui/material";
 import { Person, personService } from "../../services/personService";
-import { addPerson, getPersonsState } from "../../reducers/personSlice";
 import PersonList from "./components/personList";
+import { RootState } from "../../store";
+import { useDispatch, useSelector } from 'react-redux'
+import { addPerson, selectCount } from "../../reducers/personSlice";
 
 export default function Home(props: any) {
   const [filterdPersons, setFilterdPersons] = React.useState<Array<Person>>([]);
   const [addButton, setAddButton] = React.useState<boolean>(false);
   const [textValue, setTextValue] = React.useState<string>("");
-  const persons = useAppSelector(getPersonsState);
-  const dispatch = useAppDispatch();
+  const [persons, setPersons] = React.useState<Array<Person>>([]);
+  const statePersons = useSelector(selectCount);
+  const dispatch = useDispatch();
 
+  
   useEffect(() => {
-    setFilterdPersons(persons ?? []);
-  }, []);
+    setPersons(statePersons);
+    console.log(statePersons);
+    
+  }, [statePersons]);
+  
+  useEffect(() => {
+    setFilterdPersons(persons);
+  }, [persons]);
 
   const filterByValue = (vaule: string) => {
     if (!vaule) {
@@ -30,7 +39,7 @@ export default function Home(props: any) {
       setFilterdPersons(
         filterd ?? []
       )
-      if (filterd?.length === 0)
+      if(!filterdPersons.find(person => person.name.toLowerCase() === vaule.toLowerCase()))
         setAddButton(true);
       else
         setAddButton(false);
@@ -59,7 +68,7 @@ export default function Home(props: any) {
     if(!person)
       return;
     if (person) {
-      dispatch({ type: addPerson, payload: person });
+      dispatch(addPerson(person));
     }
     console.log(persons);
     setTextValue("");
@@ -69,11 +78,13 @@ export default function Home(props: any) {
   return (
     <div>
       <div className="flex justify-center mtb-1 gap-1">
+        {/* <Button onClick={() => dispatch(addPerson())}>Add Person</Button> */}
         <Autocomplete
           id="free-solo-demo"
           freeSolo
           value={textValue}
-          options={persons?.map((person) => person.name) ?? []}
+          // options={persons?.map((person) => person.name) ?? []}
+          options={[]}
           onInput={handleSearch}
           onChange={handleOnChange}
           onBlur={handleBlue}

@@ -3,8 +3,9 @@ import personReducer from "./reducers/personSlice";
 
 export const store = configureStore({
     reducer: { 
-        personReducer 
+        persons:personReducer 
     },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

@@ -6,7 +6,7 @@ import { RootState } from "../store";
 const firstData = await personService.getPersons();
 
 const initialState = {
-    persons: firstData,
+    value: firstData,
 }
 
 export const personsSlice = createSlice({
@@ -14,13 +14,13 @@ export const personsSlice = createSlice({
     initialState,
     reducers: {
         addPerson: (state, action: PayloadAction<Person>) => {
-            state.persons.push(action.payload);
-        }
+            state.value = [...state.value, action.payload];
+          },
     }
 });
 
 export const { addPerson } = personsSlice.actions;
 
- export const getPersonsState = (state: RootState) => state.personReducer.persons;
+export const selectCount = (state:RootState) => state.persons.value;
 
 export default personsSlice.reducer;
