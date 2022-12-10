@@ -18,12 +18,14 @@ export default function Home() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-   personService.getPersons()
+    setIsLoading(true);
+    personService.getPersons()
       .then((persons) => {
-        
+        setIsLoading(false);
         dispatch(fill(persons));
       })
       .catch((error) => {
+        setIsLoading(false);
         console.error(error);
       });
   }, []);
@@ -42,7 +44,7 @@ export default function Home() {
   const handlePersonAddClick = async () => {
     setIsLoading(true)
     const person = await personService.addPerson(textValue)
-    if (!person){
+    if (!person) {
       setIsLoading(false)
       setError("Not a valid name");
       return;
