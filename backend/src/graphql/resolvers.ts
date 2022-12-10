@@ -10,27 +10,30 @@ export const resolvers: IResolvers = {
         },
         async personByName(_, { name }) {
             //Getting a person by name from the database
-            return await Person.findOne({name});
+            return await Person.findOne({ name });
         }
     },
     Mutation: {
         async addPerson(root, { name }, ctx, info) {
             //Checking if the person already exists            
-            const entity = await Person.findOne({name});
-            if(entity)
+            const entity = await Person.findOne({ name });
+            if (entity)
                 return entity;
             //Getting vaules from the api
             const getGender = await ApiService.getGender(name);
             const getNationality = await ApiService.getNationality(name);
-            //Calculating the probability of both nationality and gender
-            const probability = getGender.probability * getNationality.probability;
             //creating a new person
             const person = new Person({
-                name:name,
-                gender: getGender.gender,
-                nationality: getNationality.country,
-                probability: probability
+                name: name,
+                gender: {
+                    type: getGender.gender,
+                    probability: getGender.probability,
+                    count: getGender.count
+                },
+                nationality: getNationality,
             })
+            console.log(person);
+            
             await person.save();
             return person;
         }

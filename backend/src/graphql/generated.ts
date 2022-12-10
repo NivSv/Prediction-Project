@@ -36,8 +36,20 @@ export type Person = {
   __typename?: "Person";
   id?: Maybe<Scalars["ID"]>;
   name?: Maybe<Scalars["String"]>;
-  nationality?: Maybe<Scalars["String"]>;
-  gender?: Maybe<Scalars["String"]>;
+  nationality?: Maybe<Array<Maybe<Nationality>>>;
+  gender?: Maybe<Gender>;
+};
+
+export type Gender = {
+  __typename?: "Gender";
+  type?: Maybe<Scalars["String"]>;
+  count?: Maybe<Scalars["Int"]>;
+  probability?: Maybe<Scalars["Float"]>;
+};
+
+export type Nationality = {
+  __typename?: "Nationality";
+  country?: Maybe<Scalars["String"]>;
   probability?: Maybe<Scalars["Float"]>;
 };
 
@@ -163,7 +175,10 @@ export type ResolversTypes = {
   Person: ResolverTypeWrapper<Person>;
   ID: ResolverTypeWrapper<Scalars["ID"]>;
   String: ResolverTypeWrapper<Scalars["String"]>;
+  Gender: ResolverTypeWrapper<Gender>;
+  Int: ResolverTypeWrapper<Scalars["Int"]>;
   Float: ResolverTypeWrapper<Scalars["Float"]>;
+  Nationality: ResolverTypeWrapper<Nationality>;
   Query: ResolverTypeWrapper<{}>;
   Mutation: ResolverTypeWrapper<{}>;
   Boolean: ResolverTypeWrapper<Scalars["Boolean"]>;
@@ -174,7 +189,10 @@ export type ResolversParentTypes = {
   Person: Person;
   ID: Scalars["ID"];
   String: Scalars["String"];
+  Gender: Gender;
+  Int: Scalars["Int"];
   Float: Scalars["Float"];
+  Nationality: Nationality;
   Query: {};
   Mutation: {};
   Boolean: Scalars["Boolean"];
@@ -187,11 +205,33 @@ export type PersonResolvers<
   id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   nationality?: Resolver<
-    Maybe<ResolversTypes["String"]>,
+    Maybe<Array<Maybe<ResolversTypes["Nationality"]>>>,
     ParentType,
     ContextType
   >;
-  gender?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  gender?: Resolver<Maybe<ResolversTypes["Gender"]>, ParentType, ContextType>;
+  isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type GenderResolvers<
+  ContextType = MercuriusContext,
+  ParentType extends ResolversParentTypes["Gender"] = ResolversParentTypes["Gender"]
+> = {
+  type?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  count?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
+  probability?: Resolver<
+    Maybe<ResolversTypes["Float"]>,
+    ParentType,
+    ContextType
+  >;
+  isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type NationalityResolvers<
+  ContextType = MercuriusContext,
+  ParentType extends ResolversParentTypes["Nationality"] = ResolversParentTypes["Nationality"]
+> = {
+  country?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   probability?: Resolver<
     Maybe<ResolversTypes["Float"]>,
     ParentType,
@@ -231,6 +271,8 @@ export type MutationResolvers<
 
 export type Resolvers<ContextType = MercuriusContext> = {
   Person?: PersonResolvers<ContextType>;
+  Gender?: GenderResolvers<ContextType>;
+  Nationality?: NationalityResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
 };
@@ -261,13 +303,33 @@ export interface Loaders<
     id?: LoaderResolver<Maybe<Scalars["ID"]>, Person, {}, TContext>;
     name?: LoaderResolver<Maybe<Scalars["String"]>, Person, {}, TContext>;
     nationality?: LoaderResolver<
-      Maybe<Scalars["String"]>,
+      Maybe<Array<Maybe<Nationality>>>,
       Person,
       {},
       TContext
     >;
-    gender?: LoaderResolver<Maybe<Scalars["String"]>, Person, {}, TContext>;
-    probability?: LoaderResolver<Maybe<Scalars["Float"]>, Person, {}, TContext>;
+    gender?: LoaderResolver<Maybe<Gender>, Person, {}, TContext>;
+  };
+
+  Gender?: {
+    type?: LoaderResolver<Maybe<Scalars["String"]>, Gender, {}, TContext>;
+    count?: LoaderResolver<Maybe<Scalars["Int"]>, Gender, {}, TContext>;
+    probability?: LoaderResolver<Maybe<Scalars["Float"]>, Gender, {}, TContext>;
+  };
+
+  Nationality?: {
+    country?: LoaderResolver<
+      Maybe<Scalars["String"]>,
+      Nationality,
+      {},
+      TContext
+    >;
+    probability?: LoaderResolver<
+      Maybe<Scalars["Float"]>,
+      Nationality,
+      {},
+      TContext
+    >;
   };
 }
 declare module "mercurius" {

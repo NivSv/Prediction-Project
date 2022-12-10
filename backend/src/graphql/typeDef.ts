@@ -4,8 +4,18 @@ export const schemaGraphql = gql`
     type Person {
         id:ID,
         name: String
-        nationality:String
-        gender: String
+        nationality:[Nationality]
+        gender: Gender
+    }
+
+    type Gender {
+        type:String,
+        count: Int,
+        probability: Float
+    }
+
+    type Nationality {
+        country:String,
         probability: Float
     }
 
@@ -18,30 +28,6 @@ export const schemaGraphql = gql`
         addPerson(name:String!): Person!
     }
 `;
-
-// const resolvers: IResolvers = {
-//     Query: {
-//         async persons() {
-//             return (await Person.find()).map(person => { return { name: person.name } });
-//         },
-//     },
-//     Mutation: {
-//         async add(root, { name }, ctx, info) {
-//             // root ~ {}
-//             root
-//             // name ~ string
-//             name
-//             // ctx.authorization ~ string | undefined
-//             ctx.authorization
-//             // info ~ GraphQLResolveInfo
-//             info
-
-//             // return { name }
-//             return { name: (await PersonService.GetOrCreate(name)).name };
-//         },
-//     },
-// }
-
 
 // const buildContext = async (req: FastifyRequest, _reply: FastifyReply) => {
 //     return {
@@ -70,13 +56,3 @@ export const schemaGraphql = gql`
 //         },
 //     },
 // }
-
-// codegenMercurius(server, {
-//     targetPath: './src/graphql/generated.ts',
-//     operationsGlob: './src/graphql/operations/*.gql',
-//     codegenConfig: {
-//         loadersCustomParentTypes: {
-//             Human: 'never',
-//         },
-//     },
-// }).catch(console.error)
