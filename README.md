@@ -15,8 +15,10 @@ This project takes a user’s input (a person’s name) and returns a predicted 
 Project is created with:
 Docker: 
 * Image of SQL server
+
 Backend:
 * Fastify(node.js framework) - Typescript
+
 Frontend:
 * React - Typescript
 
@@ -27,18 +29,22 @@ use the following command in the db-docker folder to run the image and create a 
 docker compose up -d
 ```
 step 2:
-run the backend with the commend
+run the backend with the command
 ```
 npm run dev
+```
 or
+```
 npm run build
 npm run start
 ```
 step 3:
- run the frontend with the commend
+ run the frontend with the command
 ```
 npm start
+```
 or 
+```
 npm run build
 npm run serve
 ```
