@@ -1,7 +1,5 @@
 import { gql } from '@apollo/client';
-import { BASE_URL, client } from './apolloService';
-
-const ENDPOINT = "/graphql"
+import { client } from './apolloService';
 
 export type Person = {
     id: string;

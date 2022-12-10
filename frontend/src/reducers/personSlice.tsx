@@ -3,10 +3,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Person, personService } from "../services/personService";
 import { RootState } from "../store";
 
-const firstData = await personService.getPersons();
-
 const initialState = {
-    value: firstData,
+    value: new Array<Person>(),
 }
 
 export const personsSlice = createSlice({
@@ -15,12 +13,15 @@ export const personsSlice = createSlice({
     reducers: {
         addPerson: (state, action: PayloadAction<Person>) => {
             state.value = [...state.value, action.payload];
-          },
+        },
+        fill: (state, action: PayloadAction<Array<Person>>) => {
+            state.value = [...action.payload];
+        },
     }
 });
 
-export const { addPerson } = personsSlice.actions;
+export const { addPerson , fill } = personsSlice.actions;
 
-export const selectCount = (state:RootState) => state.persons.value;
+export const selectCount = (state: RootState) => state.persons.value;
 
 export default personsSlice.reducer;

@@ -3,7 +3,7 @@ import { Button } from "@mui/material";
 import { Person, personService } from "../../services/personService";
 import PersonList from "./components/personList";
 import { useDispatch, useSelector } from 'react-redux'
-import { addPerson, selectCount } from "../../reducers/personSlice";
+import { addPerson, fill, selectCount } from "../../reducers/personSlice";
 import Filter from "./components/Filter";
 import Spinner from "../../components/spinner";
 
@@ -16,6 +16,17 @@ export default function Home() {
   const [error, setError] = React.useState<string>("");
   const statePersons = useSelector(selectCount);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+   personService.getPersons()
+      .then((persons) => {
+        
+        dispatch(fill(persons));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   //Get persons from state
   useEffect(() => {
