@@ -1,20 +1,20 @@
 import { model, Schema } from "mongoose";
 
 //All data from the api
-const personMaybeSchema = new Schema({
-    name: { type: String, required: true },
-    nationality: [
-        {
-            country: { type: String, required: true },
-            probability: { type: Number, required: true }
-        }
-    ],
-    gender: {
-        type: { type: String, required: true },
-        count: { type: String, required: true },
-        probability: { type: Number, required: true }
-    }
-});
+// const personMaybeSchema = new Schema({
+//     name: { type: String, required: true },
+//     nationality: [
+//         {
+//             country: { type: String, required: true },
+//             probability: { type: Number, required: true }
+//         }
+//     ],
+//     gender: {
+//         type: { type: String, required: true },
+//         count: { type: String, required: true },
+//         probability: { type: Number, required: true }
+//     }
+// });
 
 //Reduced data from the api
 const personSchema = new Schema({

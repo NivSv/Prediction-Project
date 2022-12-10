@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { GENDERIZE_API, NATIONALIZE_API } from '../constants/apis.constant';
 
+// response types
 type nationalityResponse = {
     country: string
     probability: number

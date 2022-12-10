@@ -6,7 +6,7 @@ import { resolvers } from './graphql/resolvers';
 import { schemaGraphql } from './graphql/typeDef';
 
 const server: FastifyInstance = fastify({
-    logger: true
+    logger: true // <- enable logger
 });
 
 server.register(cors, {
@@ -20,8 +20,8 @@ server.register(mercurius, {
 
 server.listen({ port: 3000 }, (err, address) => {
     if (err) {
-        console.error(err)
-        process.exit(1)
+        console.error(err) // <- log error
+        process.exit(1) // <- exit process
     }
 
     connect('mongodb://root:example@localhost:27017/', { dbName: 'PredictionDB', })
