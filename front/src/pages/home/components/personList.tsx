@@ -18,7 +18,7 @@ export default function PersonList(params: { persons: Person[]; }) {
         <div className="accordion">
             {
                 params.persons.map((person, index) => (
-                    <Accordion key={index} expanded={expanded === person.name}>
+                    <Accordion  key={index} expanded={expanded === person.name}>
                         <AccordionSummary
                             // expandIcon={<ExpandMoreIcon />}
                         >

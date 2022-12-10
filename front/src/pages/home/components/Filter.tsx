@@ -55,7 +55,7 @@ export default function Filter(params: FilterProps) {
             onChange={handleOnChange}
             onBlur={handleBlue}
             sx={{ width: 300 }}
-            renderInput={(params) => <TextField {...params} label="Search" />}
+            renderInput={(params) => <TextField {...params} label="Search or add" />}
         />
     )
 }
